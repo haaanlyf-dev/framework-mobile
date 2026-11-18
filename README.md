@@ -79,17 +79,6 @@ test/
 |-------|-------|--------|
 | `google_fonts` | ^8.0.0 | Poppins dan Lato (versi 9 bentrok dengan `flutter/material.dart`) |
 
-## 7. Kriteria Selesai
-
-- [ ] `flutter analyze` tanpa error, `flutter test` lolos
-- [ ] Navbar menampilkan ikon kopi dan judul "Katalog Beans Kopi"
-- [ ] Grid menampilkan 9 beans kopi dengan gambar masing-masing
-- [ ] Ketuk kartu membuka detail yang benar (dengan animasi Hero)
-- [ ] Rating berubah saat bintang diketuk
-- [ ] Form menolak nama kosong dan ulasan di bawah 5 karakter
-- [ ] Ulasan yang dikirim muncul di halaman Detail
-- [ ] Font Poppins dan Lato tampil; harga berwarna cokelat kopi
-- [ ] Tidak ada overflow (garis kuning-hitam) di Chrome
 
 ## Menjalankan
 
