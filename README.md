@@ -88,18 +88,3 @@ flutter run -d chrome
 flutter test
 ```
 
-## Kredit Gambar
-
-Semua foto dari [Wikimedia Commons](https://commons.wikimedia.org), diperkecil ke lebar 960 px. Nama produk hanya label katalog; foto tidak berasal dari daerah tersebut.
-
-| File | Sumber | Pembuat | Lisensi |
-|------|--------|---------|---------|
-| `kopi_gayo.jpg` | [Roasted arabica coffee beans Minca](https://commons.wikimedia.org/wiki/File:Roasted_arabica_coffee_beans_Minca.jpg) | Roger Burger | CC0 |
-| `kopi_toraja.jpg` | [Roasted coffee beans (Unsplash)](https://commons.wikimedia.org/wiki/File:Roasted_coffee_beans_(Unsplash).jpg) | Daniel Ruswick | CC0 |
-| `kopi_kintamani.jpg` | [Roasted Coffee Beans in Hermetic Jar](https://commons.wikimedia.org/wiki/File:Roasted_Coffee_Beans_in_Hermetic_Jar.jpg) | Pierre Camateros | CC BY-SA 3.0 |
-| `kopi_mandheling.jpg` | [Roasted coffee beans](https://commons.wikimedia.org/wiki/File:Roasted_coffee_beans.jpg) | MarkSweep | Public domain |
-| `kopi_robusta.jpg` | [Dark roasted coffee beans](https://commons.wikimedia.org/wiki/File:Dark_roasted_coffee_beans.jpg) | Jon Sullivan | Public domain |
-| `kopi_liberika.jpg` | [Liberica coffee beans, roasted](https://commons.wikimedia.org/wiki/File:Liberica_coffee_beans,_roasted.jpg) | HaztechGuy | CC BY 3.0 |
-| `kopi_espresso.jpg` | [Dark roasted espresso blend coffee beans 1](https://commons.wikimedia.org/wiki/File:Dark_roasted_espresso_blend_coffee_beans_1.jpg) | Sage Ross | CC BY-SA 3.0 |
-| `kopi_green_preanger.jpg` | [Green Bean Coffee](https://commons.wikimedia.org/wiki/File:Green_Bean_Coffee.jpg) | DeaPeaJay | CC BY-SA 2.0 |
-| `kopi_flores.jpg` | [Pre-roasted Coffee Beans](https://commons.wikimedia.org/wiki/File:Pre-roasted_Coffee_Beans_(11516809276).jpg) | Paul Galow | CC BY 2.0 |
