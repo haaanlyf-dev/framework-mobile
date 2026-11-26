@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/keranjang_model.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_application_1/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,7 +10,10 @@ void main() {
       (tester) async {
     final product = Product('Uji', 'Deskripsi', 1000, 'kopi_gayo.jpg');
     // MaterialApp polos (tanpa GoogleFonts) supaya test tidak butuh internet
-    await tester.pumpWidget(MaterialApp(home: DetailPage(product: product)));
+    await tester.pumpWidget(ChangeNotifierProvider(
+      create: (_) => KeranjangModel(),
+      child: MaterialApp(home: DetailPage(product: product)),
+    ));
 
     await tester.ensureVisible(find.text('Tulis Ulasan'));
     await tester.tap(find.text('Tulis Ulasan'));

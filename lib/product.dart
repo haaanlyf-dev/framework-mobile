@@ -1,5 +1,11 @@
 // Model data Katalog Beans Kopi (materi 2: sintaks Dart, class, List)
 
+// 85000 -> "Rp 85.000"
+String rupiah(int angka) => 'Rp ${angka.toString().replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'),
+      (m) => '.',
+    )}';
+
 class Ulasan {
   final String nama;
   final String isi;
@@ -17,11 +23,7 @@ class Product {
 
   Product(this.name, this.description, this.price, this.image);
 
-  // 85000 -> "Rp 85.000"
-  String get hargaRupiah => 'Rp ${price.toString().replaceAllMapped(
-        RegExp(r'\B(?=(\d{3})+(?!\d))'),
-        (m) => '.',
-      )}';
+  String get hargaRupiah => rupiah(price);
 
   static List<Product> getProducts() {
     return [

@@ -16,8 +16,9 @@ Aplikasi katalog beans kopi Nusantara berbasis Flutter. Pengguna melihat daftar 
 | F2 | Detail | Gambar besar, asal dan profil rasa, harga, daftar ulasan |
 | F3 | Rating bintang | Ketuk 1–3 bintang |
 | F4 | Form ulasan | Nama + isi ulasan dengan validasi; ulasan tampil di Detail |
+| F5 | Keranjang belanja | Badge jumlah item, tambah/kurangi, total harga, kosongkan (Provider). Dokumentasi: [`doc-pertemuan7/`](doc-pertemuan7/README.md) |
 
-**Di luar lingkup:** login, keranjang, pembayaran, database/API, dark mode.
+**Di luar lingkup:** login, checkout/pembayaran, database/API, dark mode.
 
 ## 3. Alur Layar
 
@@ -60,6 +61,7 @@ Semua gaya diatur sekali di `ThemeData`, lalu dipakai lewat `Theme.of(context)`.
 | 5 | Form: `TextFormField`, `GlobalKey<FormState>`, validator, `GestureDetector` | Form ulasan + `SnackBar`; ketuk kartu dan bintang |
 | 6 | Navigasi: `Navigator.push` / `pop`, kirim & kembalikan data | Kirim `Product` ke Detail, kembalikan `Ulasan` dari Form |
 | 7 | Assets, Fonts, Styling, `ThemeData`, override | 9 gambar aset, ikon, Poppins + Lato, `BoxDecoration`, override harga |
+| 9 | State management: `ChangeNotifier`, `ChangeNotifierProvider`, `Consumer`, `watch`/`read` | Keranjang belanja ([`doc-pertemuan7/`](doc-pertemuan7/README.md)) |
 
 Named routes dan `go_router` tidak dipakai: materi 6 menandai named routes tidak direkomendasikan, dan 3 halaman cukup dengan `MaterialPageRoute`.
 
@@ -67,17 +69,21 @@ Named routes dan `go_router` tidak dipakai: materi 6 menandai named routes tidak
 
 ```
 lib/
-  main.dart      // MaterialApp + tema, Beranda, Detail, Form, RatingBox
+  main.dart             // Provider + tema, Beranda, Detail, Form, RatingBox, Keranjang
+  keranjang_model.dart  // KeranjangModel (ChangeNotifier)
   product.dart   // class Product, class Ulasan, data 9 beans kopi
 assets/kopi/     // 9 foto beans kopi (terdaftar di pubspec.yaml)
 test/
   product_test.dart       // format harga, 9 produk, file gambar ada
   ulasan_flow_test.dart   // validasi form & ulasan tampil di Detail
+  keranjang_test.dart     // model keranjang & alur badge/total
+doc-pertemuan7/   // dokumentasi + screenshot fitur keranjang
 ```
 
 | Paket | Versi | Alasan |
 |-------|-------|--------|
 | `google_fonts` | ^8.0.0 | Poppins dan Lato (versi 9 bentrok dengan `flutter/material.dart`) |
+| `provider` | ^6.1.5+1 | State management keranjang (app state) |
 
 
 ## Menjalankan

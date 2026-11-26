@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import 'keranjang_model.dart';
 import 'product.dart';
 
 // Palet warna kopi (materi 7)
@@ -8,7 +10,15 @@ const kCoffee = Color(0xFF6F4E37);
 const kCream = Color(0xFFF8F1E7);
 const kBrown = Color(0xFF3E2723);
 
-void main() => runApp(const KatalogKuApp());
+// Materi 9 langkah 2: daftarkan model di root agar semua halaman bisa mengakses
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => KeranjangModel(),
+      child: const KatalogKuApp(),
+    ),
+  );
+}
 
 // =====================================================================
 // APLIKASI + TEMA GLOBAL (materi 7: semua gaya ditulis sekali di sini)
@@ -95,6 +105,7 @@ class BerandaPage extends StatelessWidget {
             Text('Katalog Beans Kopi'),
           ],
         ),
+        actions: const [TombolKeranjang()],
       ),
       // Grid responsif: tiap kolom maks. 420 px, jadi otomatis
       // 1 kolom di HP, 2 di tablet, 3 di layar laptop/Chrome
@@ -259,7 +270,10 @@ class _DetailPageState extends State<DetailPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
+      appBar: AppBar(
+        title: Text(product.name),
+        actions: const [TombolKeranjang()],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -327,6 +341,23 @@ class _DetailPageState extends State<DetailPage> {
                       RatingBox(product: product),
                     ],
                   ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      // context.read: hanya memanggil aksi, tidak mendengarkan
+                      onPressed: () {
+                        context.read<KeranjangModel>().tambah(product);
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            content: Text('${product.name} masuk keranjang.'),
+                          ));
+                      },
+                      icon: const Icon(Icons.add_shopping_cart),
+                      label: const Text('Tambah ke Keranjang'),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -381,6 +412,113 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+// =====================================================================
+// IKON KERANJANG + BADGE — Consumer (materi 9)
+// Dipakai di Beranda & Detail; keduanya otomatis sinkron karena
+// membaca model yang sama dari Provider (tanpa prop drilling).
+// =====================================================================
+class TombolKeranjang extends StatelessWidget {
+  const TombolKeranjang({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: 'Keranjang',
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const KeranjangPage()),
+      ),
+      // Consumer sedalam mungkin: hanya badge yang di-rebuild,
+      // ikon statis dioper lewat parameter child.
+      icon: Consumer<KeranjangModel>(
+        builder: (context, keranjang, child) => Badge(
+          isLabelVisible: keranjang.jumlahItem > 0,
+          label: Text('${keranjang.jumlahItem}'),
+          child: child,
+        ),
+        child: const Icon(Icons.shopping_cart),
+      ),
+    );
+  }
+}
+
+// =====================================================================
+// HALAMAN 4: KERANJANG — context.watch & context.read (materi 9)
+// =====================================================================
+class KeranjangPage extends StatelessWidget {
+  const KeranjangPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // watch: seluruh halaman ini di-rebuild setiap keranjang berubah
+    final keranjang = context.watch<KeranjangModel>();
+    final textTheme = Theme.of(context).textTheme;
+    final items = keranjang.isi.entries.toList();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Keranjang')),
+      body: items.isEmpty
+          ? Center(
+              child: Text('Keranjang masih kosong.',
+                  style: textTheme.bodyMedium),
+            )
+          : ListView(
+              padding: const EdgeInsets.all(8),
+              children: [
+                for (final e in items)
+                  Card(
+                    child: ListTile(
+                      title: Text(e.key.name),
+                      subtitle: Text(
+                          '${e.key.hargaRupiah} x ${e.value} = ${rupiah(e.key.price * e.value)}'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            tooltip: 'Kurangi',
+                            icon: const Icon(Icons.remove_circle_outline),
+                            onPressed: () =>
+                                context.read<KeranjangModel>().kurangi(e.key),
+                          ),
+                          Text('${e.value}'),
+                          IconButton(
+                            tooltip: 'Tambah',
+                            icon: const Icon(Icons.add_circle_outline),
+                            onPressed: () =>
+                                context.read<KeranjangModel>().tambah(e.key),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+      bottomNavigationBar: items.isEmpty
+          ? null
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text('Total: ${rupiah(keranjang.totalHarga)}',
+                          style: textTheme.titleMedium),
+                    ),
+                    // Tugas materi 9: tombol Reset memanggil reset() lewat read
+                    TextButton.icon(
+                      onPressed: () => context.read<KeranjangModel>().reset(),
+                      style: TextButton.styleFrom(foregroundColor: Colors.red),
+                      icon: const Icon(Icons.remove_shopping_cart),
+                      label: const Text('Kosongkan'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }
